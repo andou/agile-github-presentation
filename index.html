@@ -1,49 +1,317 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+    <title>Agile Git</title>
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/night-custom.css">
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <!-- Title -->
+        <section>
+            <h1>Agile Git</h1>
+            <h5>A step by step workflow proposal for real life web projects</h5>
+            <p>
+                <small>Speaker: <a href="mailto:a.pastorino@bitmama.it">Antonio Pastorino</a></small>
+            </p>
+        </section>
+        <!-- Main picture -->
+        <section>
+            <section>
+                <h2>The main picture</h2>
+            </section>
+            <section>
+                <p>
+                    Real life web projects present us a set of nontrivial challenges that could be dealt through the
+                    proper use of a VCS system
+                </p>
+            </section>
+            <section>
+                <p>
+                    As developers we need to be able to
+                </p>
+                <ul>
+                    <li><strong>keep track of our work</strong> in an efficien and effective way</li>
+                    <li>independently <strong>deliver features</strong> in the right environment at the required pace
+                    </li>
+                    <li><strong>identify</strong> errors, bugs and regressions</li>
+                    <li><strong>postpone the delivery</strong> of a feature even when is production-ready</li>
+                    <li><strong>play around</strong> without breaking others code</li>
+                </ul>
+            </section>
+            <section>
+                <p>
+                    Implementing a <strong>VCS workflow</strong> is an attempt to cope with all of these necessities
+                    respecting our
+                    clients requirements, milestones and deadlines
+                </p>
+                <p class="fragment">
+                    (and all the crazy stuff, yes)
+                </p>
+            </section>
+        </section>
+        <!-- Prerequisites -->
+        <section>
+            <section>
+                <h2>Prerequisites</h2>
+            </section>
+            <section>
+                <h3>
+                    Required basic knowledge
+                </h3>
+                <p>
+                <ul>
+                    <li class="fragment">Git</li>
+                    <li class="fragment">GitHub</li>
+                    <li class="fragment">Agile and at least one of its implementations (like SCRUM)</li>
+                </ul>
+                </p>
+            </section>
+        </section>
+        <!-- Concepts -->
+        <section>
+            <section>
+                <h2>Concepts</h2>
+            </section>
+            <section>
+                <h3>
+                    Branch
+                </h3>
+                <p>
+                    A separate line of work
+                </p>
+            </section>
+            <section>
+                <h3>
+                    Public branch
+                </h3>
+                <p>
+                    It is a branch that more than one person pulls from
+                </p>
+            </section>
+            <section>
+                <h3>
+                    Private branch
+                </h3>
+                <p>
+                    It is a branch that you alone are using and is not exposed in the public repo
+                </p>
+            </section>
+        </section>
+        <!-- Workflow -->
+        <section>
+            <section>
+                <h2>Workflow</h2>
+            </section>
+            <section>
+                <p>
+                    In a nutshell, a version control workflow handles
+                </p>
+                <ul>
+                    <li>features <span class="fragment">implementation</span></li>
+                    <li>bug <span class="fragment">fixing</span></li>
+                    <li>releases <span class="fragment">managing</span></li>
+                </ul>
+            </section>
+            <section>
+                <p>
+                    Our codebase is aimed to run on multiple environments (local, dev, stage/QA, production)
+                </p>
+            </section>
+            <section>
+                <p>
+                    From small to large to HUGE projects, keeping a clean and sane history is paramount
+                </p>
+            </section>
+            <section>
+                <p>
+                    Git is a down-to-earth tool for designing VCS workflows rather than a mere version control system
+                </p>
+            </section>
+        </section>
+        <!-- Branching model - Main -->
+        <section>
+            <section>
+                <h2>Branching Model</h2>
+                <h3>Main branches</h3>
+            </section>
+            <section>
+                <p>
+                    Persisting public branches that reflects the state of a <strong>specific environment</strong>
+                </p>
+            </section>
+            <section>
+                <p>
+                    No one pushes its commits directly on these branches
+                </p>
+            </section>
+            <section
+                    data-background="https://img.buzzfeed.com/buzzfeed-static/static/2013-11/enhanced/webdr03/5/13/anigif_enhanced-buzz-16710-1383677227-5.gif">
+                <h3>... and this is quite a key concept</h3>
+            </section>
+            <section>
+                <p>
+                    The minimal set of <strong>main branches</strong> is:
+                </p>
+                <ul>
+                    <li><em>master</em> reflects the production-ready state</li>
+                    <li><em>staging</em> reflects the qa-ready state</li>
+                </ul>
+            </section>
+            <section>
+                <p>
+                    With the same logic we can define a persistent main branch for each environment we should need
+                </p>
+            </section>
+        </section>
+        <!-- Branching model - Features -->
+        <section>
+            <section>
+                <h2>Branching Model</h2>
+                <h3>Feature branches</h3>
+            </section>
+            <section>
+                <p>
+                    Public branches that unlike the main ones usually have a <strong>limited lifetime</strong>
+                </p>
+            </section>
+            <section>
+                <p>
+                    These branches should always lead to a <strong>pull request</strong>
+                </p>
+            </section>
+            <section>
+                <p>
+                    They should be <strong>deleted</strong> and cease to exist when the corresponding pull request will
+                    eventually be merged into master
+                </p>
+            </section>
+        </section>
+        <!-- Branching model - Task -->
+        <section>
+            <section>
+                <h2>Branching Model</h2>
+                <h3>Task branches</h3>
+            </section>
+            <section>
+                <p>
+                    These branches are likely to be private, connected with a specific feature branch and with a very
+                    limited lifetime
+                </p>
+            </section>
+            <section>
+                <p>
+                    They should represent the local state of your development, where you can play around without
+                    worriyng about other development
+                </p>
+            </section>
+            <section>
+                <p>
+                    From time to time you should rebase the corresponding feature branch into them and move on with your
+                    development
+                </p>
+            </section>
+            <section>
+                <p>
+                    When you have something to deliver you should merge them into the corresponging feature branch
+                </p>
+            </section>
+        </section>
+        <!-- References -->
+        <section>
+            <section>
+                <h2>References</h2>
+            </section>
+            <section>
+                <p>
+                    Branching model
+                </p>
+                <ul>
+                    <li>
+                        <a href="https://nvie.com/posts/a-successful-git-branching-model/">https://nvie.com/posts/a-successful-git-branching-model/</a>
+                    </li>
+                    <li>
+                        <a href="https://www.atlassian.com/agile/software-development/branching">https://www.atlassian.com/agile/software-development/branching</a>
+                    </li>
+                    <li>
+                        <a href="https://www.slideshare.net/lemiorhan/git-branching-model">https://www.slideshare.net/lemiorhan/git-branching-model</a>
+                    </li>
+                    <li>
+                        <a href="http://reinh.com/blog/2009/03/02/a-git-workflow-for-agile-teams.html">http://reinh.com/blog/2009/03/02/a-git-workflow-for-agile-teams.html/</a>
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <p>
+                    GIT & Agile
+                </p>
+                <ul>
+                    <li>
+                        <a href="https://www.atlassian.com/agile/software-development/git-branching-video">https://www.atlassian.com/agile/software-development/git-branching-video</a>
+                    </li>
+                    <li>
+                        <a href="https://www.atlassian.com/agile/software-development/git">https://www.atlassian.com/agile/software-development/git</a>
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <p>
+                    Rebase
+                </p>
+                <ul>
+                    <li>
+                        <a href="https://git-scm.com/book/en/v2/Git-Branching-Rebasing">https://git-scm.com/book/en/v2/Git-Branching-Rebasing</a>
+                    </li>
+                    <li>
+                        <a href="https://www.git-tower.com/blog/understanding-rebase-merge-in-git/">https://www.git-tower.com/blog/understanding-rebase-merge-in-git/</a>
+                    </li>
+                    <li>
+                        <a href="https://medium.freecodecamp.org/git-rebase-and-the-golden-rule-explained-70715eccc372">https://medium.freecodecamp.org/git-rebase-and-the-golden-rule-explained-70715eccc372</a>
+                    </li>
+                    <li>
+                        <a href="https://www.atlassian.com/git/tutorials/merging-vs-rebasing">https://www.atlassian.com/git/tutorials/merging-vs-rebasing</a>
+                    </li>
+                </ul>
+            </section>
+    </div>
+</div>
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
 
-		<script>
-			// More info about config & dependencies:
-			// - https://github.com/hakimel/reveal.js#configuration
-			// - https://github.com/hakimel/reveal.js#dependencies
-			Reveal.initialize({
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
-				]
-			});
-		</script>
-	</body>
+<script>
+    // More info about config & dependencies:
+    // - https://github.com/hakimel/reveal.js#configuration
+    // - https://github.com/hakimel/reveal.js#dependencies
+    Reveal.initialize({
+        dependencies: [
+            {src: 'plugin/markdown/marked.js'},
+            {src: 'plugin/markdown/markdown.js'},
+            {src: 'plugin/notes/notes.js', async: true},
+            {
+                src: 'plugin/highlight/highlight.js', async: true, callback: function () {
+                    hljs.initHighlightingOnLoad();
+                }
+            }
+        ]
+    });
+</script>
+</body>
 </html>
