@@ -234,6 +234,217 @@
                 </p>
             </section>
         </section>
+        <!-- Digression - Rebase -->
+        <section>
+            <section>
+                <h2>A little digression</h2>
+                <h3>Rebase</h3>
+            </section>
+            <section data-background="https://media0.giphy.com/media/FE0WTM8BG754I/giphy.gif">
+                <h2>
+                    When merging hell is not enough
+                </h2>
+            </section>
+            <section>
+                <p>
+                    There are two main ways to integrate changes from one branch to another
+                </p>
+                <ul>
+                    <li><em>merge</em> the plain and simple way</li>
+                    <li><em>rebase</em> the "why I hate me so much" way</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Merge</h3>
+                <ul>
+                    <li>the easiest option</li>
+                    <li>creates a new "merge commit" in the destination branch</li>
+                    <li>this "merge commit" ties together the histories of both branches</li>
+                </ul>
+            </section>
+            <section
+                    data-background="https://wac-cdn.atlassian.com/dam/jcr:e229fef6-2c2f-4a4f-b270-e1e1baa94055/02.svg?cdnVersion=jy">
+            </section>
+            <section>
+                <ul>
+                    <li>this is a non-destructive operation</li>
+                    <li>existing branches are not changed in any way</li>
+                    <li>on the other hand the destination branch will have an extraneous "merge commit"</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Rebase</h3>
+                <ul>
+                    <li>moves the entire destination branch to begin of the tip of the origin branch</li>
+                    <li>does not create a "merge commit" but rewrites instead the project history</li>
+                    <li>this operation is made by creating new commits</li>
+                </ul>
+            </section>
+            <section
+                    data-background="https://wac-cdn.atlassian.com/dam/jcr:5b153a22-38be-40d0-aec8-5f2fffc771e5/03.svg?cdnVersion=jy">
+            </section>
+            <section>
+                <ul>
+                    <li>this way the project history is (much) cleaner</li>
+                    <li>does not clog your log with "merge commits"</li>
+                    <li>results ina linear project history</li>
+                    <li>on the other hand, re-writing project history can be potentially <strong>catastrophic</strong>
+                    </li>
+                    <li>we lose a little bit of context provided by the merge commit</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Rebase pitfalls</h3>
+                <ul>
+                    <li>rebasing results in brand new commits replacing other commits</li>
+                    <li>this only happens in our local repository though</li>
+                    <li>all other developers are still working with the old set of commits</li>
+                    <li>this easily leads to
+                        <ul>
+                            <li>diverging project history</li>
+                            <li>extra merge commits</li>
+                            <li>two set of commits containing the same changes</li>
+                            <li class="fragment">and catastrophe</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <p>
+                    So, before you run git rebase, always ask yourself, “Is anyone else looking at this branch?”
+                </p>
+                <p>
+                    If the answer is yes, take your hands off the keyboard and start thinking about a non-destructive
+                    way to make your changes
+                </p>
+                <p>
+                    Otherwise, you’re safe to re-write history as much as you like.
+                </p>
+            </section>
+        </section>
+        <!-- Branching pattern - Workflow -->
+        <section>
+            <section>
+                <h2>Branching Pattern</h2>
+                <h3>Implementing the workflow</h3>
+            </section>
+            <section>
+                <p>
+                    Let's pick a common situation, we have two main branches
+                </p>
+                <ul>
+                    <li><em>master</em> contains everything we want to have in production</li>
+                    <li><em>staging</em> contains everything we have in production <strong>plus</strong> some stuff the
+                        client is evaluating
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <p>
+                    We need to implement a new feature, let's say: <em>links should be green no matter what</em>
+                </p>
+            </section>
+            <section>
+                <p>
+                    Get going with a clean start
+                </p>
+                <pre>$ git checkout master<br/>$ git pull origin master</pre>
+            </section>
+            <section>
+                <p>
+                    Make a <em>feature</em> branch to work in
+                </p>
+                <pre>$ git checkout -b features_all_link_green</pre>
+            </section>
+            <section
+                    data-background="https://media.giphy.com/media/bAplZhiLAsNnG/giphy.gif">
+                <h3>
+                    Work hard on your feature
+                </h3>
+            </section>
+            <section>
+                <p>
+                    Commit your changes when you have something
+                </p>
+                <pre>$ git commit -am "Some links are now green"</pre>
+                <p>
+                    And finalize your work
+                </p>
+                <pre>$ git commit -am "Now all links are green"</pre>
+            </section>
+            <section>
+                <p>
+                    When you are done, you should firstly merge with master
+                </p>
+                <pre>$ git checkout master<br/>$ git pull origin master<br/>$ git checkout -b features_all_link_green<br/>$ git rebase master</pre>
+            </section>
+            <section>
+                <p>
+                    Before pushing your changes, this is the very last change to squash some unwanted commit message
+                </p>
+                <pre>$ git rebase -i master</pre>
+            </section>
+            <section>
+                <p>
+                    When everything in your local env is done, is time to deliver the <em>feature</em> branch into the
+                    wild
+                </p>
+                <pre>$ git push origin features_all_link_green</pre>
+                <p>
+                    and open a <em>pull request</em> for this <em>feature</em> branch
+                </p>
+            </section>
+            <section>
+                <p>
+                    Opening a <em>pull request</em> should leads to a merge of the branch into staging and a consequent
+                    staging release
+                </p>
+                <pre>$ git checkout staging<br/>$ git pull origin staging<br/>$ git merge features_all_link_green<br/>$ git push origin staging</pre>
+            </section>
+            <section data-background="https://media0.giphy.com/media/tXL4FHPSnVJ0A/giphy.gif">
+                <h3>
+                    Waiting for client approval and release scheduling
+                </h3>
+            </section>
+            <section>
+                <p>
+                    When we are ready for a production release, it's time to resolve the pull request
+                </p>
+                <pre>$ git checkout master<br/>$ git pull origin master<br/>$ git merge features_all_link_green<br/>$ git push origin master<br/>$ git tag -a 1.0.X</pre>
+                <p>
+                    We can also eventually delete our branch
+                </p>
+                <pre>$ git branch -d features_all_link_green<br/>$ git push origin :features_all_link_green</pre>
+            </section>
+        </section>
+        <!-- Branching pattern - Wrapping up-->
+        <section>
+            <section>
+                <h2>Branching Pattern</h2>
+                <h3>Wrapping up</h3>
+            </section>
+            <section>
+                <p>
+                    Summing up:
+                </p>
+                <ul>
+                    <li>Checkout and pull the master</li>
+                    <li>Make a new feature branch from there</li>
+                    <li>Work on your feature and commit your changes, frequently merging the master in your branch</li>
+                    <li>When you are done
+                        <ul>
+                            <li>merge master in your branch</li>
+                            <li>squash unwanted commits and rewrite messages rebasing</li>
+                            <li>push your feature branch</li>
+                        </ul>
+                    </li>
+                    <li>Open a pull request</li>
+                    <li>Wait for a staging release and client approval</li>
+                    <li>Resolve the pull request and release in production</li>
+                    <li>Eventually delete the feature branch</li>
+                </ul>
+            </section>
+        </section>
         <!-- References -->
         <section>
             <section>
@@ -241,20 +452,47 @@
             </section>
             <section>
                 <p>
+                    GIT
+                </p>
+                <ul>
+                    <li>
+                        <a href="https://git-scm.com/">Git</a>
+                    </li>
+                    <li>
+                        <a href="http://andou.github.io/github-for-dummies">Introductory Git presentation</a>
+                    </li>
+                    <li>
+                        <a href="https://git-scm.com/book/en/v2">Git Book</a>
+                    </li>
+                    <li>
+                        <a href="https://git-scm.com/docs">Git References cheat sheet</a>
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <p>
                     Branching model
                 </p>
                 <ul>
                     <li>
-                        <a href="https://nvie.com/posts/a-successful-git-branching-model/">https://nvie.com/posts/a-successful-git-branching-model/</a>
+                        <a href="https://nvie.com/posts/a-successful-git-branching-model/">A successful Git branching
+                            model</a>
                     </li>
                     <li>
-                        <a href="https://www.atlassian.com/agile/software-development/branching">https://www.atlassian.com/agile/software-development/branching</a>
+                        <a href="http://blog.hasmanythrough.com/2008/12/18/agile-git-and-the-story-branch-pattern">Agile
+                            git and the story branch pattern</a>
                     </li>
                     <li>
-                        <a href="https://www.slideshare.net/lemiorhan/git-branching-model">https://www.slideshare.net/lemiorhan/git-branching-model</a>
+                        <a href="https://www.atlassian.com/agile/software-development/branching">Feature branching your
+                            way to greatness</a>
                     </li>
                     <li>
-                        <a href="http://reinh.com/blog/2009/03/02/a-git-workflow-for-agile-teams.html">http://reinh.com/blog/2009/03/02/a-git-workflow-for-agile-teams.html/</a>
+                        <a href="https://www.slideshare.net/lemiorhan/git-branching-model">Git branching model for
+                            efficient development</a>
+                    </li>
+                    <li>
+                        <a href="http://reinh.com/blog/2009/03/02/a-git-workflow-for-agile-teams.html">A Git Workflow
+                            for Agile Teams</a>
                     </li>
                 </ul>
             </section>
@@ -264,10 +502,12 @@
                 </p>
                 <ul>
                     <li>
-                        <a href="https://www.atlassian.com/agile/software-development/git-branching-video">https://www.atlassian.com/agile/software-development/git-branching-video</a>
+                        <a href="https://www.atlassian.com/agile/software-development/git-branching-video">Git branching
+                            for agile teams</a>
                     </li>
                     <li>
-                        <a href="https://www.atlassian.com/agile/software-development/git">https://www.atlassian.com/agile/software-development/git</a>
+                        <a href="https://www.atlassian.com/agile/software-development/git">Git makes software
+                            development, well, easier</a>
                     </li>
                 </ul>
             </section>
@@ -277,19 +517,61 @@
                 </p>
                 <ul>
                     <li>
-                        <a href="https://git-scm.com/book/en/v2/Git-Branching-Rebasing">https://git-scm.com/book/en/v2/Git-Branching-Rebasing</a>
+                        <a href="https://git-scm.com/book/en/v2/Git-Branching-Rebasing">Git Branching - Rebasing</a>
                     </li>
                     <li>
-                        <a href="https://www.git-tower.com/blog/understanding-rebase-merge-in-git/">https://www.git-tower.com/blog/understanding-rebase-merge-in-git/</a>
+                        <a href="https://www.git-tower.com/blog/understanding-rebase-merge-in-git/">Understanding Rebase
+                            (And Merge) in Git</a>
                     </li>
                     <li>
-                        <a href="https://medium.freecodecamp.org/git-rebase-and-the-golden-rule-explained-70715eccc372">https://medium.freecodecamp.org/git-rebase-and-the-golden-rule-explained-70715eccc372</a>
+                        <a href="https://medium.freecodecamp.org/git-rebase-and-the-golden-rule-explained-70715eccc372">Git
+                            rebase and the golden rule explained.</a>
                     </li>
                     <li>
-                        <a href="https://www.atlassian.com/git/tutorials/merging-vs-rebasing">https://www.atlassian.com/git/tutorials/merging-vs-rebasing</a>
+                        <a href="https://www.atlassian.com/git/tutorials/merging-vs-rebasing">Merging vs. Rebasing</a>
                     </li>
                 </ul>
             </section>
+            <section>
+                <p>
+                    Useful tools
+                </p>
+                <ul>
+                    <li>
+                        <a href="https://revealjs.com">Reveal.js</a>, to build presentation like this
+                    </li>
+                    <li>
+                        <a href="https://pages.github.com/">GitHub Pages</a>, to drop your stand-alone projects in the
+                        wild
+                    </li>
+                    <li>
+                        <a href="https://andou.github.io/gitdash/">Gittype</a>, to quickly sketch git workflows
+                    </li>
+                </ul>
+            </section>
+        </section>
+        <!-- The End -->
+        <section>
+            <h2>The End</h2>
+            <ul>
+                <li>
+                    <a href="https://andou.github.io/agile-github-presentation/">Link to this presentation</a>
+                </li>
+                <li>
+                    <a href="https://github.com/andou/agile-github-presentation">Source code of this presentation</a>
+                </li>
+            </ul>
+        </section>
+        <section>
+            <h5>License</h5>
+            <div>
+                <img src="http://mirrors.creativecommons.org/presskit/icons/cc.png" alt="CC BY-SA 3.0"
+                     title="CC BY-SA 3.0" class="noborder">
+                <img src="http://mirrors.creativecommons.org/presskit/icons/by.png" class="noborder">
+                <img src="http://mirrors.creativecommons.org/presskit/icons/sa.png" class="noborder">
+                <p style="font-size: 0.7em;">CC BY-SA 3.0</p>
+            </div>
+        </section>
     </div>
 </div>
 
