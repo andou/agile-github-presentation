@@ -16,7 +16,7 @@ body {
   font-family: "Open Sans", sans-serif;
   font-size: 40px;
   font-weight: normal;
-  color: #eee; }
+  color: #DDD; }
 
 ::selection {
   color: #fff;
@@ -56,7 +56,8 @@ body {
   font-size: 3.77em; }
 
 .reveal h2 {
-  font-size: 2.11em; }
+  font-size: 2.11em; text-decoration: underline;
+  color: #AAA;}
 
 .reveal h3 {
   font-size: 1.55em; }
